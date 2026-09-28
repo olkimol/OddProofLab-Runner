@@ -79,6 +79,17 @@ def install_runtime():
         lines.append(line)
     req.write_text('\n'.join(lines) + '\n')
     pip('install', '-q', '-r', str(req))
+    run([sys.executable, '-m', 'pip', 'cache', 'purge'])
+    run(['bash', '-lc', 'rm -rf /var/lib/apt/lists/* /tmp/* || true'])
+    print('PIP_CACHE_PURGED=1', flush=True)
+    free_disk_space('AFTER_RUNTIME')
+
+
+def free_disk_space(label):
+    usage = shutil.disk_usage(ROOT)
+    free_gib = usage.free / (1024 ** 3)
+    print(f'DISK_FREE_{label}={free_gib:.2f}GiB', flush=True)
+    return free_gib
 
 
 def clean_output():
@@ -286,6 +297,17 @@ def main():
     clean_output()
     install_runtime()
     ref = make_start_frame(m)
+
+    # The SDXL checkpoint is only needed for the first reference frame.
+    # Remove it before SkyReels downloads/loads its own model so Kaggle's
+    # /kaggle/working disk is not filled by two large model families at once.
+    sdxl_cache = CACHE / 'huggingface' / 'hub' / 'models--stabilityai--stable-diffusion-xl-base-1.0'
+    if sdxl_cache.exists():
+        shutil.rmtree(sdxl_cache)
+        print('SDXL_CACHE_REMOVED=1', flush=True)
+    gc.collect()
+    free_disk_space('BEFORE_SKYREELS')
+
     scenes = []
     scene_scores = []
     for i, scene in enumerate(m['scenes'], 1):
