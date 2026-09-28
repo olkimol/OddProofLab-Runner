@@ -1,0 +1,32 @@
+{
+  "slug": "you-never-actually-touch-anything",
+  "title": "You Never Actually Touch Anything",
+  "start_frame_seed": 9170101,
+  "minimum_motion_score": 2.2,
+  "voice": "af_heart",
+  "start_frame_prompt": "Ultra-photorealistic vertical 9:16 live-action science documentary frame. A real human index fingertip is one millimeter above polished dark stone, side angle exactly at fingertip level, cool neutral cinematic daylight, realistic pores, fingerprint ridges, tiny dust and micro-scratches, natural reflection, shallow physically plausible depth of field, premium ARRI Alexa 35 and 100mm macro lens look, no contact yet, no text, no labels, no infographic, no CGI appearance.",
+  "negative_prompt": "cartoon, anime, flat diagram, infographic, static illustration, slideshow, plastic skin, waxy skin, malformed finger, extra fingers, fused anatomy, fantasy electricity, neon force field, colored atom balls, planetary electron orbits, text, labels, watermark, low detail, oversharpened, cheap CGI, game render, black bars, seams",
+  "narration": "Touch the table. It feels completely solid. But zoom far enough in, and touch stops looking like two hard surfaces meeting. Atoms in your fingertip and the table carry diffuse electron distributions. Push them close and electrical interactions resist further compression, while quantum rules including Pauli exclusion make crowding the electrons into the same states energetically costly. Your fingertip deforms by a microscopic amount. Nerves detect that resistance, and your brain calls it touch. So contact is real at our scale — underneath, it is matter resisting matter.",
+  "captions": [
+    "TOUCH THE TABLE. NOW ZOOM IN.",
+    "THE SURFACES STOP LOOKING SOLID.",
+    "ELECTRON DISTRIBUTIONS INTERACT.",
+    "QUANTUM RULES RESIST COMPRESSION.",
+    "THAT RESISTANCE IS WHAT YOU FEEL."
+  ],
+  "scenes": [
+    {"seed":9170111,"duration_seconds":6,"prompt":"Continue from the exact reference fingertip and stone. During the first second the fingertip presses only slightly; fingerprint ridges flatten naturally and the reflection compresses. Camera performs a precise micro-dolly and then a physically continuous extreme macro push directly into the exact center of the contact patch, with genuine parallax through skin ridges and stone microtexture. Preserve the same finger, stone, lighting, screen direction and camera axis. End still moving inward at microscopic material scale. No cut, no dissolve, no diagram, no labels, no fantasy particles, no malformed anatomy."},
+    {"seed":9170112,"duration_seconds":6,"prompt":"Continue seamlessly from the previous final frame at the identical contact point. The impossible scientific camera keeps traveling inward by orders of magnitude while fingertip material remains above and stone below. Real microstructure resolves into a physically inspired quantum-scale visualization: nuclei remain subtle while diffuse translucent electron-density regions appear as volumetric probability haze, never colored balls and never orbital rings. The two materials approach and their electronic distributions visibly deform as interaction energy rises. Premium documentary realism, deep spatial scale cues, no hard cut, no infographic, no text."},
+    {"seed":9170113,"duration_seconds":6,"prompt":"Maintain the identical atomic contact region and camera orientation. Pressure increases slightly. Show electron-density regions compressing and rearranging rather than behaving like solid spheres; visualize increasing interaction energy through subtle physically plausible density deformation and restrained field-like gradients, never neon beams or sparks. Convey electromagnetic interaction plus fermionic quantum-state exclusion without literal labels. The boundary flexes microscopically under load. Ultra-real scientific visualization with realistic volumetric depth and material continuity, no diagram, no orbiting electrons, no sci-fi effects."},
+    {"seed":9170114,"duration_seconds":6,"prompt":"From the same microscopic interaction reverse the scale journey in one continuous accelerating pullback. Electron-density detail transitions naturally into material microstructure, then fingerprint ridges and polished stone, preserving the exact contact location and orientation. As macro scale returns, the fingertip remains slightly flattened by the normal force. Briefly reveal subtle anatomically plausible mechanoreceptor response inside the fingertip through a restrained translucent scientific cutaway integrated into the same geometry, then return fully exterior. Premium documentary cinematography, no gore, no labels, no unrelated objects."},
+    {"seed":9170115,"duration_seconds":6,"prompt":"Continue the exact macro shot. The fingertip slowly releases pressure from the same stone; flattened fingerprint ridges recover elastically and the contact patch shrinks naturally. Camera makes a controlled short pullback while keeping the original contact point centered, ending with the fingertip hovering one millimeter above the surface to echo the opening. Real pores, natural reflection, cool daylight, premium science documentary finish, no generated text, no black bars, no seams, no duplicated anatomy."}
+  ],
+  "production_notes": {
+    "director_intent": "The camera physically enters one recognizable contact point; no replacement by a schoolbook diagram.",
+    "science_guard": "Do not claim a literal classical empty gap or zero wavefunction overlap. Macroscopic contact is real; ordinary resistance reflects electromagnetic interactions and quantum constraints including Pauli exclusion.",
+    "generated_runtime_ratio_target": 1.0,
+    "external_footage_ratio_target": 0.0,
+    "sound_design": "Natural fingertip contact and faint stone resonance under narration; restrained low-frequency microscopic texture during the scale dive; no sci-fi zaps or UI beeps.",
+    "qa_blockers": ["cheap atom graphics","neon shield","static visualization","finger deformation","missing narration","caption clipping","broken exterior-to-interior continuity","black bar or seam"]
+  }
+}
