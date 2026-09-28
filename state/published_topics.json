@@ -1,0 +1,248 @@
+{
+  "topics": {
+    "why-you-cant-tickle-yourself": {
+      "title": "Why You Can't Tickle Yourself",
+      "video_ids": [
+        "fupBuPhe2oE",
+        "oLCTmgktqfk",
+        "GJpXvdOVEDA",
+        "eWiELfxV-h8"
+      ]
+    },
+    "your-nose-is-in-your-vision-right-now": {
+      "title": "Your Nose Is in Your Vision Right Now",
+      "video_ids": [
+        "bOs4NMy2u10"
+      ],
+      "sha256": "6875bf2ae94f0d605fd57c427634a513d1bb1a1db772035eea8ed4f63a8a7ea1"
+    },
+    "if-earth-stopped-spinning-for-one-second": {
+      "title": "If Earth Stopped Spinning for ONE Second",
+      "video_ids": [
+        "RtuKY1UGKsY"
+      ],
+      "sha256": "ffec7669cf4ba5f60042a1fa07f6dfafaf8bc4d14ec95e87167f3352f39461f7"
+    },
+    "why-you-see-stars-when-you-rub-your-eyes": {
+      "title": "Why You See Stars When You Rub Your Eyes",
+      "video_ids": [
+        "2jPvWgUufeg"
+      ]
+    },
+    "why-you-can-swallow-upside-down": {
+      "title": "Why You Can Swallow Upside Down",
+      "video_ids": [
+        "bmnoTwaeUbI"
+      ],
+      "sha256": "23c1e53f0d41b822a6b8f5af5c264790033fbc69c6b70fc4816962dc35855a82"
+    },
+    "how-mosquitoes-find-you-in-the-dark": {
+      "title": "How Mosquitoes Find You in the Dark",
+      "video_ids": [
+        "QtImVKfjw0g"
+      ],
+      "sha256": "808cf3286a1c96692860682b1ed89236ed658a79fa1208c7d3c38a4f99e455b9"
+    },
+    "why-water-skates-on-a-screaming-hot-pan": {
+      "title": "Why Water Skates on a Screaming-Hot Pan",
+      "video_ids": [
+        "M2u7UjJmJSU"
+      ],
+      "sha256": "72114c93167dd188a6f2d6b323c7acea713517ef5d4175e0014001fd1de4d1e4"
+    },
+    "why-you-still-feel-spinning-after-you-stop": {
+      "title": "Why You Still Feel Spinning After You Stop",
+      "video_ids": [
+        "Sf-7Z8Dg7so"
+      ],
+      "sha256": "297e92be3c81a2e6390e06d12afa57d96294a2b6b364acf81c408a494c815627",
+      "production": {
+        "quality_standard": "photorealistic-cinematic",
+        "semantic_visual_qa": "PASS",
+        "source_run_id": 34131177593,
+        "artifact_id": 10022242350,
+        "pipeline": "repository-native-ffmpeg-edge-tts"
+      }
+    },
+    "why-mirrors-dont-really-flip-left-and-right": {
+      "title": "Why Mirrors Don’t Really Flip Left and Right",
+      "video_ids": [
+        "xBWZsKTYrFI"
+      ],
+      "sha256": "c811bc1c84827e15cef1aaa7f94c0f1dfcb0f76b9131528be3335ff43dc77ee6",
+      "production": {
+        "quality_standard": "photorealistic-cinematic",
+        "semantic_visual_qa": "PASS",
+        "source_run_id": 34144246110,
+        "artifact_id": 10027079102,
+        "pipeline": "repository-native-ffmpeg-edge-tts"
+      }
+    },
+    "how-water-striders-jump-off-water": {
+      "title": "How Water Striders Jump Off Water",
+      "video_ids": [
+        "L4lvddCaPVs"
+      ],
+      "sha256": "214bd6d9361703449a30b9de9335da85dc075aee69e12acee4b68e57187cad23",
+      "production": {
+        "quality_standard": "photorealistic-cinematic",
+        "semantic_visual_qa": "PASS",
+        "source_run_id": 34182484444,
+        "artifact_id": 10039409318,
+        "pipeline": "repository-native-ffmpeg-edge-tts"
+      }
+    },
+    "how-geckos-stick-to-walls-without-glue": {
+      "title": "How Geckos Stick to Walls Without Glue",
+      "video_ids": [
+        "g6p2GXTFrjU"
+      ],
+      "sha256": "6d8c36f9ba200bd74e90cf0dbe8ec0f17b7d574a7763a7a46f61db5f769d0673",
+      "production": {
+        "quality_standard": "photorealistic-cinematic",
+        "semantic_visual_qa": "PASS",
+        "source_run_id": 34210755744,
+        "artifact_id": 10049733556,
+        "pipeline": "repository-native-ffmpeg-edge-tts"
+      }
+    },
+    "glass-survives-hammer-then-explodes-from-tail": {
+      "title": "This Glass Survives a Hammer — Then Explodes From One Touch",
+      "video_ids": [
+        "HkoMiF5tGDI"
+      ],
+      "sha256": "b479e3db500ab35886d5b7551f2d4a61a6b75c9a05a72751853c10169fe8bb24",
+      "production": {
+        "quality_standard": "photorealistic-cinematic",
+        "semantic_visual_qa": "PASS",
+        "source_run_id": 34230941403,
+        "artifact_id": 10057777289,
+        "pipeline": "repository-native-ffmpeg-edge-tts"
+      }
+    },
+    "why-paper-cuts-hurt-so-much": {
+      "title": "Why Paper Cuts Hurt So Much",
+      "video_ids": [
+        "wyVNhRurZg8"
+      ],
+      "sha256": "1f73a41c0d3b16633bcb11d333d44a95151813f83e57e7d7eb04330e55a737a3",
+      "production": {
+        "quality_standard": "photorealistic-cinematic",
+        "semantic_visual_qa": "PASS",
+        "source_run_id": 34236489431,
+        "artifact_id": 10061686169,
+        "pipeline": "self-generated-blender-ffmpeg-edge-tts"
+      }
+    },
+    "what-a-cavity-really-does-inside-your-tooth": {
+      "title": "What a Cavity Really Does Inside Your Tooth",
+      "video_ids": [
+        "0OuuEHgIdvU"
+      ],
+      "sha256": "24b2f1cd0648d6956e3ed54f2a3e867447faf8967047c746f78985284d7d6857",
+      "production": {
+        "quality_standard": "photorealistic-cinematic",
+        "semantic_visual_qa": "PASS",
+        "source_run_id": 34347759952,
+        "artifact_id": 10102482577,
+        "pipeline": "repository-native-ffmpeg-edge-tts"
+      }
+    },
+    "what-really-happens-when-you-crack-your-knuckles": {
+      "title": "What Really Happens When You Crack Your Knuckles",
+      "video_ids": [
+        "r66AiyMFmQ4"
+      ],
+      "sha256": "55109b01bb7167b9e56c904f86ddf5ad6cc79848f26aa2a25987179e5c90669a",
+      "production": {
+        "quality_standard": "photorealistic-cinematic",
+        "semantic_visual_qa": "PASS",
+        "source_run_id": 34352100980,
+        "artifact_id": 10104199980,
+        "pipeline": "repository-native-ffmpeg-edge-tts"
+      }
+    },
+    "what-happens-inside-your-foot-when-it-falls-asleep": {
+      "title": "What Happens Inside Your Foot When It Falls Asleep",
+      "video_ids": [
+        "KWHeNM0Cl7Q"
+      ],
+      "url": "https://www.youtube.com/watch?v=KWHeNM0Cl7Q",
+      "sha256": "3b51273385a3d864413ede7176412f856a10076e3251c7783020e30e5862382c",
+      "published_at": "2026-09-11T04:52:51Z",
+      "production": {
+        "quality_standard": "photorealistic-cinematic",
+        "semantic_visual_qa": "PASS",
+        "source_run_id": 34478724148,
+        "artifact_id": 10152718726,
+        "pipeline": "repository-native-ffmpeg-edge-tts-supabase-upload-post"
+      }
+    },
+    "why-a-mosquito-bite-starts-itching": {
+      "title": "Why a Mosquito Bite Starts Itching",
+      "video_ids": [
+        "u0qVu7u9kkM"
+      ],
+      "url": "https://www.youtube.com/watch?v=u0qVu7u9kkM",
+      "sha256": "1255d1b3f8697267b6076f17a3bcb10c8960f0c27e5df7fd361efd45c2166856",
+      "published_at": "2026-09-12T20:02:36.791Z",
+      "production": {
+        "quality_standard": "photorealistic-cinematic",
+        "semantic_visual_qa": "PASS",
+        "source_run_id": 34715592902,
+        "artifact_id": 10304138520,
+        "pipeline": "repository-native-ffmpeg-edge-tts-supabase-upload-post"
+      }
+    },
+    "how-your-body-pushes-a-splinter-out": {
+      "title": "How Your Body Pushes a Splinter Out",
+      "video_ids": [
+        "Kt3wiDyeZqo"
+      ],
+      "url": "https://www.youtube.com/watch?v=Kt3wiDyeZqo",
+      "sha256": "5882c6e5641e8fbf51baedb5a37f535571a80bb55f6e97182a34da42f93cf3e2",
+      "published_at": "2026-09-12T20:24:11.141Z",
+      "production": {
+        "quality_standard": "photorealistic-cinematic",
+        "semantic_visual_qa": "PASS",
+        "source_run_id": 34716367051,
+        "artifact_id": 10304414839,
+        "pipeline": "repository-native-ffmpeg-edge-tts-supabase-upload-post"
+      }
+    },
+    "what-a-tattoo-needle-actually-does-under-your-skin": {
+      "title": "What a Tattoo Needle Actually Does Under Your Skin",
+      "video_ids": [
+        "gzCnS9C3n7s"
+      ],
+      "url": "https://www.youtube.com/watch?v=gzCnS9C3n7s",
+      "sha256": "9c2ee57c6f218e1e270e728da7c97261b19399ecf459c9d18b409bf3c9fe1d62",
+      "published_at": "2026-09-13T06:13:50.644Z",
+      "production": {
+        "quality_standard": "photorealistic-cinematic",
+        "semantic_visual_qa": "PASS",
+        "source_run_id": 34741959959,
+        "artifact_id": 10313161276,
+        "pipeline": "repository-native-ffmpeg-edge-tts-supabase-upload-post"
+      }
+    },
+    "why-ice-sticks-to-your-tongue": {
+      "title": "Why Ice Sticks to Your Tongue",
+      "video_ids": [],
+      "rejected_video_ids": [
+        "sk3L5mPDjvo"
+      ],
+      "previous_url": "https://www.youtube.com/watch?v=sk3L5mPDjvo",
+      "previous_sha256": "80fc4e953607d5388c3bc50ccc292527c49c1d5e13297c401dfa9b11edeb93a0",
+      "previous_published_at": "2026-09-16T04:44:08.553Z",
+      "status": "QUALITY_REJECTED_AND_NOT_PRESENT_IN_CURRENT_YOUTUBE_INVENTORY",
+      "replacement_required": true,
+      "quality_incident": "oddproof/production/quality-incidents/2026-09-16-why-ice-sticks-to-your-tongue.json",
+      "production": {
+        "quality_standard": "photorealistic-cinematic",
+        "semantic_visual_qa": "PASS",
+        "pipeline": "chatgpt-cgi-drive-direct-upload-post"
+      }
+    }
+  }
+}
