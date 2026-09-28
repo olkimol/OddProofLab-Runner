@@ -1,0 +1,22 @@
+{
+  "slug":"animal-reverse-own-aging",
+  "title":"The Animal That Can Reverse Its Own Aging",
+  "format":"9:16 29.8s premium cinematic science short",
+  "generated_runtime_ratio":1.0,
+  "external_runtime_ratio":0.0,
+  "director_intent":"Make the biological reversal visually undeniable: begin with a living adult jellyfish in a real ocean, then follow one continuous impossible-camera journey into the transformation back toward a juvenile polyp state. Awe, not fantasy.",
+  "science_guard":"Turritopsis dohrnii can under some conditions revert from medusa toward an earlier polyp stage via cellular reprogramming/transdifferentiation; do not claim it is invulnerable or cannot die.",
+  "start_frame_prompt":"Ultra-real underwater macro cinematography of a tiny transparent Turritopsis-like hydrozoan medusa drifting in dark Mediterranean-blue seawater, visible translucent bell, fine tentacles, suspended micro-particles, physically accurate caustics, documentary wildlife photography, real optical depth, vertical composition, no text, no illustration.",
+  "negative_prompt":"cartoon, anime, infographic, diagram, labels, fantasy monster, plastic CGI, glowing neon jellyfish, impossible anatomy, duplicated tentacles, text, watermark, low detail",
+  "narration":"This tiny jellyfish has a trick no human can copy. When badly stressed, Turritopsis dohrnii can abandon its adult form. Its body collapses, cells reorganize, and the animal can return toward a juvenile polyp stage. From there, a colony may grow new medusae again. It is often called immortal, but that is misleading. Predators, disease, or damage can still kill it. What is extraordinary is the reset: an adult life stage can biologically rewind.",
+  "captions":["AN ADULT THAT CAN REWIND","THE MEDUSA COLLAPSES","CELLS CHANGE THEIR JOBS","BACK TOWARD A POLYP STAGE","A RESET — NOT INVINCIBILITY"],
+  "scenes":[
+    {"seed":76201,"duration_seconds":6,"prompt":"Start on the exact reference medusa drifting naturally. Slow underwater probe-camera push toward the transparent bell while tentacles and particles respond to current. Preserve anatomy and scale. In the final second camera crosses optically through the bell surface without a cut, beginning the impossible-camera journey. Premium wildlife documentary realism, no labels or schematic graphics."},
+    {"seed":76202,"duration_seconds":6,"prompt":"Continue seamlessly from inside the same organism at microscopic scale. The stressed medusa tissue visibly contracts and folds inward with wet translucent biological material, not gore. Camera tracks alongside the collapsing tissue; cellular layers remain spatially connected to the exterior body. Show a real physical transformation process rather than a magical dissolve, with subtle membrane motion and fluid physics."},
+    {"seed":76203,"duration_seconds":6,"prompt":"Maintain exact spatial continuity and move deeper to cellular macro scale. Living cells reorganize within translucent tissue; shapes and contacts change gradually as cell roles are reprogrammed. Show membrane texture, cytoplasm translucency and extracellular fluid with scientific-documentary realism. No DNA icons, arrows, labels, glowing circuits or abstract infographic language."},
+    {"seed":76204,"duration_seconds":6,"prompt":"Camera pulls outward continuously as the reorganized living tissue settles onto a natural submerged surface and forms a tiny attached polyp-like juvenile structure. The transformation must feel biologically continuous, wet and physical. Real seawater particles, subtle current, macro lens depth of field, no sudden replacement object, no time portal or fantasy effect."},
+    {"seed":76205,"duration_seconds":6,"prompt":"Continue from the same attached juvenile polyp colony. Use a restrained natural-history time-compression effect to show budding and the life cycle beginning again, then end on a new tiny medusa drifting away into the same water. Keep scale and species continuity. Finish with a strong clean documentary hero frame; no claim of invulnerability, no text generated in image."}
+  ],
+  "audio_direction":"Natural American-English female documentary narration; restrained deep-water ambience, faint water movement only, no horror stingers, no synthetic beeps.",
+  "qa":"Reject if jellyfish anatomy mutates, transformation is a dissolve, juvenile stage appears from nowhere, visuals look neon/fantasy/CGI, or narration says the animal cannot die."
+}
