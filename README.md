@@ -2,13 +2,12 @@
 
 Public execution-only repository for OddProofLab.
 
-The private repository `olkimol/OddProofLab` remains the source of truth for approved topic manifests, renderer code, QA rules, publication registry, and YouTube OAuth credentials.
+This repository contains only non-secret execution code, approved topic manifests, and public production state copied from the private `olkimol/OddProofLab` source of truth.
 
-This repository exists only to run orchestration on GitHub-hosted runners without consuming the exhausted private-repository Actions budget.
+Purpose: run orchestration on GitHub-hosted runners without consuming the exhausted private-repository Actions budget.
 
-Required encrypted repository secrets:
+Required encrypted repository secret:
 
-- `ODDPROOF_PRIVATE_REPO_TOKEN` — fine-grained GitHub token with read access only to `olkimol/OddProofLab`.
 - `KAGGLE_API_TOKEN` — Kaggle API token for account `olkimol`.
 
-YouTube OAuth secrets stay in the private repository and are not copied here.
+YouTube OAuth secrets are not stored here yet. Rendering and technical QA are automated; publication remains blocked until semantic visual/audio QA passes.
