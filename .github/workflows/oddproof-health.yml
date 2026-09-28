@@ -11,22 +11,23 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
-      PRIVATE_REPO_TOKEN: ${{ secrets.ODDPROOF_PRIVATE_REPO_TOKEN }}
       KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
       KAGGLE_USERNAME: olkimol
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Validate required secrets
+      - name: Validate local executor files
         run: |
-          test -n "$PRIVATE_REPO_TOKEN" || { echo MISSING_ODDPROOF_PRIVATE_REPO_TOKEN; exit 2; }
-          test -n "$KAGGLE_API_TOKEN" || { echo MISSING_KAGGLE_API_TOKEN; exit 2; }
+          test -f engine/ultrareal-runner.py
+          test -f engine/sprint-runner.py
+          test -f engine/topic-01-you-never-actually-touch-anything.json
+          test -f config/queue.json
+          test -f state/published_topics.json
 
-      - name: Verify private OddProofLab access
+      - name: Validate Kaggle secret
         run: |
-          git ls-remote             "https://x-access-token:$PRIVATE_REPO_TOKEN@github.com/olkimol/OddProofLab.git"             refs/heads/oddproof-shorts | tee /tmp/private-ref.txt
-          test -s /tmp/private-ref.txt
+          test -n "$KAGGLE_API_TOKEN" || { echo MISSING_KAGGLE_API_TOKEN; exit 2; }
 
       - name: Verify Kaggle access
         run: |
