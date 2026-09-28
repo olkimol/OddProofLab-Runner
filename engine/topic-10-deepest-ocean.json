@@ -1,0 +1,31 @@
+{
+  "slug":"deepest-place-ocean-deeper-than-everest",
+  "title":"The Deepest Place in the Ocean Is Deeper Than Everest Is Tall",
+  "format":"9:16 premium cinematic science Short",
+  "runtime_target_seconds":29.8,
+  "generated_runtime_ratio":1.0,
+  "external_source_runtime_ratio":0.0,
+  "directing":"One continuous descent from a sunlit ocean surface to Challenger Deep, using impossible-camera scale transitions without turning into an infographic. The viewer should physically feel the increasing depth, darkness and pressure.",
+  "storyboard":[
+    "0-6s: camera plunges from bright Pacific surface; distant research vessel rapidly recedes above",
+    "6-12s: descend past dim blue midwater; light collapses and suspended marine particles cross lens",
+    "12-18s: camera passes an Everest-scale ghosted spatial comparison implied by terrain scale only, never labels or floating graphics",
+    "18-24s: enter hadal darkness; pressure is visualized physically through a small descending instrument housing subtly flexing, not exploding",
+    "24-30s: seabed of Challenger Deep emerges in submersible light; sediment lifts in a slow cloud and camera settles inches above bottom"
+  ],
+  "start_frame_prompt":"Ultra-realistic vertical live-action aerial-to-water cinematic frame above the western Pacific, dark cobalt ocean under natural daylight, small real research vessel for human scale, physically accurate sea surface reflections, documentary IMAX realism, natural atmospheric haze, high dynamic range, no text, no diagram, no CGI look.",
+  "negative_prompt":"cartoon, illustration, infographic, labels, map overlay, depth numbers, fake giant sea monsters, fantasy trench, plastic CGI, video game, slideshow, static image, malformed ship, duplicated objects, text, watermark",
+  "narration":"Mount Everest is enormous. But you could drop the entire mountain into the deepest known part of the ocean and its summit would still be underwater. We are descending into Challenger Deep, in the Mariana Trench. Sunlight disappears far above us. Pressure rises to more than a thousand times what you feel at sea level. At roughly eleven kilometers down, the seafloor finally appears. Everest is about 8.8 kilometers tall. Down here, even its peak would remain buried beneath more than two kilometers of ocean.",
+  "captions":["DEEPER THAN EVEREST IS TALL","SUNLIGHT DISAPPEARS FAR ABOVE","THE PRESSURE KEEPS CLIMBING","CHALLENGER DEEP: ABOUT 11 KM","EVEREST'S SUMMIT WOULD STILL BE UNDERWATER"],
+  "scenes":[
+    {"duration_seconds":6,"seed":76010,"prompt":"Start exactly from the supplied ocean reference. A physically real cinema camera dives through the Pacific surface beside the research vessel and accelerates downward in one continuous shot. Water droplets and bubbles pass the lens, sunlight forms realistic volumetric shafts, the vessel shrinks naturally overhead. Preserve ocean orientation and scale. Strong first-second plunge hook. No cut, no text, no graphic overlay, photoreal documentary cinematography."},
+    {"duration_seconds":6,"seed":76011,"prompt":"Continue from the exact last frame and descend deeper through real open-ocean water. Blue daylight progressively weakens; fine marine snow and tiny particles drift with believable hydrodynamics and parallax. Camera keeps descending smoothly, never teleporting. No fantasy creatures, no arbitrary environment change, no labels. Premium underwater cinematography with realistic scattering, absorption and lens behavior."},
+    {"duration_seconds":6,"seed":76012,"prompt":"Continue the same descent into near darkness. Communicate gigantic vertical scale cinematically through distant rock geometry and the long uninterrupted fall, not an infographic. A small scientific depth instrument enters the frame as a stable scale anchor and descends with camera. Preserve its exact geometry into following scenes. Cold dark water, sparse particles, physically plausible lighting, ultra-real."},
+    {"duration_seconds":6,"seed":76013,"prompt":"Continue downward into the hadal zone with the same scientific instrument. Darkness is almost complete except its restrained practical lights. Show extreme pressure only through subtle physically plausible compression response in flexible seals and housing components; nothing implodes or explodes. Marine snow drifts slowly. Camera and instrument remain spatially coherent, premium scientific documentary realism."},
+    {"duration_seconds":6,"seed":76014,"prompt":"Continue seamlessly until Challenger Deep seafloor materializes in the instrument lights. Real pale sediment and irregular trench floor emerge from blackness; the camera decelerates and settles just above bottom. A soft sediment cloud lifts from nearby water displacement and rolls naturally across frame. End on immense quiet scale. No monsters, no labels, no glowing fantasy, no fake CGI terrain, ultra-real submersible cinematography."}
+  ],
+  "sound_design":"Natural ocean entry impact in opening, then progressively muffled low underwater ambience, sparse hull/instrument creaks at depth, no horror stingers, narration always dominant.",
+  "continuity_guard":"Single downward journey; same ocean, same vertical orientation, no teleporting, no depth labels generated inside imagery, scientific instrument introduced in scene 3 persists unchanged through scenes 4-5.",
+  "science_guard":"Use approximate Challenger Deep depth around 11 km and Everest height about 8.8 km; do not claim an exact permanently fixed trench depth. Do not depict humans exposed to hadal pressure or instant cartoon implosion.",
+  "qa_blockers":["flat infographic comparison","fake depth labels inside generated frames","fantasy sea monster","visible scene teleport","instrument disappears or mutates","cheap CGI trench","scientifically false pressure explosion","robotic narration","subtitle clipping"]
+}
