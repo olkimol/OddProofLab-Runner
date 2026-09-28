@@ -1,0 +1,339 @@
+name: ODDPROOF Free Public Executor
+
+on:
+  workflow_dispatch:
+    inputs:
+      manifest:
+        description: Exact topic manifest filename, or blank for next queued topic
+        required: false
+        type: string
+      force:
+        description: Re-render even if already pending QA
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: oddproof-free-public-executor
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 210
+    env:
+      PRIVATE_REPO_TOKEN: ${{ secrets.ODDPROOF_PRIVATE_REPO_TOKEN }}
+      KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
+      KAGGLE_USERNAME: olkimol
+
+    steps:
+      - name: Checkout public executor
+        uses: actions/checkout@v4
+
+      - name: Validate secrets
+        run: |
+          test -n "$PRIVATE_REPO_TOKEN" || { echo MISSING_ODDPROOF_PRIVATE_REPO_TOKEN; exit 2; }
+          test -n "$KAGGLE_API_TOKEN" || { echo MISSING_KAGGLE_API_TOKEN; exit 2; }
+
+      - name: Checkout private OddProofLab source of truth
+        uses: actions/checkout@v4
+        with:
+          repository: olkimol/OddProofLab
+          ref: oddproof-shorts
+          token: ${{ secrets.ODDPROOF_PRIVATE_REPO_TOKEN }}
+          path: source
+          persist-credentials: false
+
+      - name: Select approved topic
+        id: topic
+        env:
+          REQUESTED_MANIFEST: ${{ inputs.manifest }}
+          FORCE_RENDER: ${{ inputs.force }}
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os
+          from pathlib import Path
+
+          queue=json.loads(Path("config/queue.json").read_text())
+          registry=json.loads(Path("source/oddproof/published_topics.json").read_text())
+          state_path=Path("state/rendered.json")
+          state=json.loads(state_path.read_text()) if state_path.exists() else {"items":[]}
+
+          published=set(registry.get("topics",{}))
+          pending={
+              x["slug"] for x in state.get("items",[])
+              if x.get("status") in {"pending_qa","qa_pass","publishing"}
+          }
+
+          manifest_dir=Path("source/oddproof/gpu-video/kaggle")
+          requested=os.getenv("REQUESTED_MANIFEST","").strip()
+          force=os.getenv("FORCE_RENDER","false").lower()=="true"
+          candidates=[requested] if requested else queue["topics"]
+
+          selected=None
+          for name in candidates:
+              p=manifest_dir/name
+              if not p.exists():
+                  if requested:
+                      raise SystemExit(f"MANIFEST_NOT_FOUND={name}")
+                  continue
+              topic=json.loads(p.read_text())
+              slug=topic["slug"]
+              if slug in published and not force:
+                  if requested:
+                      raise SystemExit(f"TOPIC_ALREADY_PUBLISHED={slug}")
+                  continue
+              if slug in pending and not force:
+                  if requested:
+                      raise SystemExit(f"TOPIC_ALREADY_PENDING_QA={slug}")
+                  continue
+              selected=(name,topic)
+              break
+
+          if selected is None:
+              raise SystemExit("NO_ELIGIBLE_TOPIC_IN_QUEUE")
+
+          name,topic=selected
+          print("manifest="+name)
+          print("slug="+topic["slug"])
+          print("title="+topic["title"])
+          print("SELECTED_TOPIC="+topic["slug"])
+          PY
+
+      - name: Install Kaggle CLI
+        run: python -m pip install -q -U kaggle
+
+      - name: Verify Kaggle authentication
+        run: |
+          kaggle --version
+          kaggle kernels list --user "$KAGGLE_USERNAME" --page-size 1 >/tmp/kaggle-auth.txt
+          cat /tmp/kaggle-auth.txt
+
+      - name: Build private GPU package
+        env:
+          SELECTED_MANIFEST: ${{ steps.topic.outputs.manifest }}
+        run: |
+          rm -rf /tmp/oddproof-kaggle
+          mkdir -p /tmp/oddproof-kaggle
+          python - <<'PY'
+          import base64, json, os
+          from pathlib import Path
+
+          src=Path("source/oddproof/gpu-video/kaggle")
+          selected=os.environ["SELECTED_MANIFEST"]
+          files={
+              "selected-topic.json": src/selected,
+              "sprint-runner.py": src/"sprint-runner.py",
+              "ultrareal-runner.py": src/"ultrareal-runner.py",
+          }
+          payload={
+              name: base64.b64encode(path.read_bytes()).decode("ascii")
+              for name,path in files.items()
+          }
+
+          lines=[
+              "from __future__ import annotations",
+              "import base64, subprocess, sys",
+              "from pathlib import Path",
+              "RUNTIME=Path('/kaggle/working/oddproof-runtime')",
+              "RUNTIME.mkdir(parents=True, exist_ok=True)",
+              f"PAYLOAD={payload!r}",
+              "for name,encoded in PAYLOAD.items():",
+              "    (RUNTIME/name).write_bytes(base64.b64decode(encoded))",
+              "subprocess.run([sys.executable, str(RUNTIME/'sprint-runner.py'), '--manifest', str(RUNTIME/'selected-topic.json')], check=True)",
+          ]
+          Path("/tmp/oddproof-kaggle/oddproof_public_executor.py").write_text("\n".join(lines)+"\n")
+
+          meta={
+              "id":"olkimol/oddproof-public-executor",
+              "title":"OddProof Public Executor",
+              "code_file":"oddproof_public_executor.py",
+              "language":"python",
+              "kernel_type":"script",
+              "is_private":"true",
+              "enable_gpu":"true",
+              "enable_internet":"true",
+              "machine_shape":"NvidiaTeslaT4",
+              "dataset_sources":[],
+              "competition_sources":[],
+              "kernel_sources":[],
+              "model_sources":[]
+          }
+          Path("/tmp/oddproof-kaggle/kernel-metadata.json").write_text(
+              json.dumps(meta,indent=2)+"\n"
+          )
+          PY
+
+      - name: Submit Kaggle GPU generation
+        run: kaggle kernels push -p /tmp/oddproof-kaggle
+
+      - name: Wait for Kaggle completion
+        run: |
+          SLUG="$KAGGLE_USERNAME/oddproof-public-executor"
+          transient=0
+          for i in $(seq 1 300); do
+            set +e
+            STATUS=$(kaggle kernels status "$SLUG" 2>&1)
+            RC=$?
+            set -e
+            printf '%s\n' "$STATUS"
+
+            if [ "$RC" -ne 0 ]; then
+              transient=$((transient+1))
+              echo "KAGGLE_STATUS_TRANSIENT_FAILURE=$transient"
+              if [ "$transient" -ge 12 ]; then
+                kaggle kernels logs "$SLUG" || true
+                exit 1
+              fi
+              sleep 30
+              continue
+            fi
+
+            transient=0
+            STATE=$(printf '%s\n' "$STATUS" | sed -nE 's/^[[:space:]]*[Ss]tatus:[[:space:]]*"?([^"[:space:]]+)"?.*/\1/p' | tail -n1 | tr '[:lower:]' '[:upper:]')
+            if [ -z "$STATE" ]; then
+              STATE=$(printf '%s\n' "$STATUS" | grep -Eo 'KernelWorkerStatus\.[A-Za-z_]+' | tail -n1 | cut -d. -f2 | tr '[:lower:]' '[:upper:]' || true)
+            fi
+
+            echo "KAGGLE_KERNEL_STATE=${STATE:-UNKNOWN}"
+            case "$STATE" in
+              COMPLETE|COMPLETED) exit 0 ;;
+              ERROR|FAILED|CANCELLED|CANCELED)
+                echo "KAGGLE_KERNEL_TERMINAL_FAILURE=$STATE"
+                kaggle kernels logs "$SLUG" || true
+                exit 1
+                ;;
+              *) sleep 30 ;;
+            esac
+          done
+
+          echo KAGGLE_TIMEOUT
+          kaggle kernels logs "$SLUG" || true
+          exit 1
+
+      - name: Download exact candidate
+        run: |
+          rm -rf candidate
+          mkdir -p candidate
+          kaggle kernels output "$KAGGLE_USERNAME/oddproof-public-executor" -p candidate
+          test -f candidate/oddproof-output/candidate.mp4
+          test -f candidate/oddproof-output/generation.json
+          test -f candidate/oddproof-output/hook-sheet.jpg
+          test -f candidate/oddproof-output/contact-sheet.jpg
+
+      - name: Re-run technical QA and create review manifest
+        env:
+          SELECTED_MANIFEST: ${{ steps.topic.outputs.manifest }}
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+          python - <<'PY'
+          import hashlib, json, os, subprocess
+          from pathlib import Path
+
+          out=Path("candidate/oddproof-output")
+          video=out/"candidate.mp4"
+          generation=json.loads((out/"generation.json").read_text())
+          topic=json.loads(
+              (Path("source/oddproof/gpu-video/kaggle")/os.environ["SELECTED_MANIFEST"]).read_text()
+          )
+
+          probe=json.loads(subprocess.check_output(
+              ["ffprobe","-v","error","-show_streams","-show_format","-of","json",str(video)],
+              text=True
+          ))
+          v=next(x for x in probe["streams"] if x.get("codec_type")=="video")
+          a=next(x for x in probe["streams"] if x.get("codec_type")=="audio")
+          dur=float(probe["format"]["duration"])
+
+          if (int(v["width"]),int(v["height"]))!=(1080,1920):
+              raise SystemExit("TECH_QA_FAIL_RESOLUTION")
+          if v.get("codec_name")!="h264" or a.get("codec_name")!="aac":
+              raise SystemExit("TECH_QA_FAIL_CODECS")
+          if not 29.70<=dur<=29.90:
+              raise SystemExit(f"TECH_QA_FAIL_DURATION={dur}")
+
+          sha=hashlib.sha256(video.read_bytes()).hexdigest()
+          if sha!=generation.get("candidate_sha256"):
+              raise SystemExit("TECH_QA_FAIL_SHA_MISMATCH")
+
+          review={
+              "slug":topic["slug"],
+              "title":topic["title"],
+              "description":f"{topic['title']} — a cinematic OddProofLab science Short. #Shorts #Science #OddProofLab",
+              "tags":["Shorts","Science","OddProofLab"],
+              "primary_hook":topic.get("captions",[""])[0],
+              "quality_standard":"photorealistic-cinematic",
+              "candidate_sha256":sha,
+              "duration_seconds":dur,
+              "backends":["skyreels-v3"],
+              "backend":generation.get("video_backend","skyreels-v3-reference2video-low-vram"),
+              "technical_qa":"PASS",
+              "motion_qa":generation.get("motion_qa"),
+              "semantic_visual_qa":"REQUIRED_BEFORE_PUBLISH",
+              "source_manifest":os.environ["SELECTED_MANIFEST"]
+          }
+          (out/"manifest.json").write_text(json.dumps(review,indent=2)+"\n")
+          (out/"source-topic.json").write_text(json.dumps(topic,indent=2)+"\n")
+          print("TECHNICAL_QA=PASS")
+          print("CANDIDATE_SHA256="+sha)
+          PY
+
+      - name: Preserve pending-QA artifact
+        id: upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: oddproof-${{ steps.topic.outputs.slug }}-${{ github.run_id }}
+          path: candidate/oddproof-output/
+          retention-days: 3
+          compression-level: 0
+          if-no-files-found: error
+
+      - name: Record pending QA state
+        env:
+          SLUG: ${{ steps.topic.outputs.slug }}
+          TITLE: ${{ steps.topic.outputs.title }}
+          MANIFEST: ${{ steps.topic.outputs.manifest }}
+          ARTIFACT_ID: ${{ steps.upload.outputs.artifact-id }}
+          ARTIFACT_URL: ${{ steps.upload.outputs.artifact-url }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          p=Path("state/rendered.json")
+          data=json.loads(p.read_text()) if p.exists() else {"items":[]}
+          data["items"]=[
+              x for x in data.get("items",[])
+              if x.get("slug")!=os.environ["SLUG"]
+          ]
+          data["items"].append({
+              "slug":os.environ["SLUG"],
+              "title":os.environ["TITLE"],
+              "source_manifest":os.environ["MANIFEST"],
+              "status":"pending_qa",
+              "run_id":int(os.environ["GITHUB_RUN_ID"]),
+              "artifact_id":int(os.environ["ARTIFACT_ID"]),
+              "artifact_url":os.environ["ARTIFACT_URL"],
+              "rendered_at":datetime.now(timezone.utc).isoformat()
+          })
+          p.write_text(json.dumps(data,indent=2)+"\n")
+          PY
+
+          git config user.name "OddProofLab Runner"
+          git config user.email "actions@users.noreply.github.com"
+          git add state/rendered.json
+          git commit -m "Record pending QA: $SLUG"
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      - name: Gate
+        run: |
+          echo "RENDER=SUCCESS"
+          echo "PUBLICATION=BLOCKED_PENDING_SEMANTIC_VISUAL_AUDIO_QA"
+          echo "NEXT_TOPIC_CAN_CONTINUE=TRUE"
