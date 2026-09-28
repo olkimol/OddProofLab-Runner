@@ -2,6 +2,9 @@ name: ODDPROOF Free Public Executor
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - 'executor-trigger.txt'
     inputs:
       manifest:
         description: Exact topic manifest filename, or blank for next queued topic
