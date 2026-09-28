@@ -1,0 +1,26 @@
+{
+  "slug":"why-dead-bodies-can-still-move",
+  "title":"Why Dead Bodies Can Still Move",
+  "start_frame_seed":9170801,
+  "minimum_motion_score":2.2,
+  "voice":"af_heart",
+  "start_frame_prompt":"Ultra-photorealistic vertical cinematic forensic-science documentary shot of a relaxed human hand resting motionless on a clean white sheet in a neutral clinical research setting, respectful non-graphic framing, realistic skin texture, soft cool daylight, shallow depth of field, no blood, no injury, no text, no horror styling.",
+  "negative_prompt":"gore, blood, corpse horror, zombie, supernatural, scary face, mutilation, cartoon, infographic, labels, plastic skin, text, watermark, black bars, malformed anatomy",
+  "narration":"A body can sometimes move after death, but not because it is coming back to life. Muscle cells do not shut down like a light switch. For a short time, chemical gradients and remaining cellular energy can still trigger small contractions. Later, rigor mortis develops as ATP becomes unavailable and muscle proteins lock together. As tissues dry, cool, and change tension, fingers or limbs may shift slightly. These are mechanical and biochemical aftereffects of dying tissue — not purposeful movement, consciousness, or anything supernatural.",
+  "captions":["MOVEMENT AFTER DEATH CAN HAPPEN.","IT ISN'T CONSCIOUS MOVEMENT.","MUSCLE CHEMISTRY DOESN'T STOP INSTANTLY.","RIGOR MORTIS CHANGES MUSCLE TENSION.","BIOCHEMISTRY — NOT THE SUPERNATURAL."],
+  "scenes":[
+    {"seed":9170811,"duration_seconds":6,"prompt":"Begin on the exact respectful clinical hand shot. Hold almost still for the first beat, then show one extremely subtle physically plausible finger twitch, small enough to feel observational rather than horror. Camera makes a slow forensic macro push toward the forearm. No gore, no face, no supernatural cues, no dramatic jump scare."},
+    {"seed":9170812,"duration_seconds":6,"prompt":"Continue the same camera move through intact skin into a premium photoreal scientific cutaway of forearm skeletal muscle at microscopic scale. Preserve exact spatial orientation. Show a few isolated muscle fibers producing tiny residual contractions as ion gradients dissipate; hydrated tissue, capillaries and fibers remain anatomically coherent. No labels, neon electricity or textbook diagram."},
+    {"seed":9170813,"duration_seconds":6,"prompt":"Move deeper to molecular-scale actin and myosin interactions inside the same muscle fibers. Visualize ATP-dependent cross-bridge release becoming progressively unavailable without using glowing icons or words. Motion gradually changes from intermittent microscopic sliding toward locked tension, scientifically restrained and physically continuous."},
+    {"seed":9170814,"duration_seconds":6,"prompt":"Pull back from molecular scale to the same forearm over a compressed-time scientific visualization. Show cooling, dehydration and changing muscle tension subtly altering tissue geometry while rigor develops. The hand remains respectful and non-graphic; one finger changes resting angle by only a few millimeters. No zombie motion, no whole-body movement, no horror lighting."},
+    {"seed":9170815,"duration_seconds":6,"prompt":"Return continuously to the original exterior hand composition. The hand is now fully still. Camera slowly pulls back in calm neutral clinical light, ending on the clear visual idea that tiny postmortem shifts are passive tissue mechanics. No generated text, no gore, no supernatural imagery, no sensationalism."}
+  ],
+  "production_notes":{
+    "director_intent":"Use the provocative hook without horror exploitation. The visual journey explains residual contraction and rigor from exterior hand to muscle fiber to molecular mechanism and back.",
+    "science_guard":"Do not imply purposeful movement or consciousness after death. Keep claims limited to possible small contractions/shifts from residual cellular processes, rigor, cooling, dehydration and tissue tension; timing and magnitude vary.",
+    "generated_runtime_ratio_target":1.0,
+    "external_footage_ratio_target":0.0,
+    "sound_design":"Natural calm English narration, near-silent clinical room tone, restrained low-frequency texture during microscopic travel; no screams, heartbeat, horror stingers or zombie sounds.",
+    "qa_blockers":["gore","horror framing","purposeful corpse movement","zombie imagery","scientifically false resurrection implication","flat anatomy diagram","malformed hand","missing narration","caption clipping"]
+  }
+}
