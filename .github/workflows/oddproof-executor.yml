@@ -137,7 +137,7 @@ jobs:
               "    (RUNTIME/name).write_bytes(base64.b64decode(encoded))",
               "subprocess.run([sys.executable, str(RUNTIME/'sprint-runner.py'), '--manifest', str(RUNTIME/'selected-topic.json')], check=True)",
           ]
-          Path("/tmp/oddproof-kaggle/oddproof_public_executor.py").write_text("\\n".join(lines)+"\\n")
+          Path("/tmp/oddproof-kaggle/oddproof_public_executor.py").write_text("\n".join(lines)+"\n")
 
           meta={
               "id":"olkimol/oddproof-public-executor",
@@ -155,7 +155,7 @@ jobs:
               "model_sources":[]
           }
           Path("/tmp/oddproof-kaggle/kernel-metadata.json").write_text(
-              json.dumps(meta,indent=2)+"\\n"
+              json.dumps(meta,indent=2)+"\n"
           )
           PY
 
@@ -171,7 +171,7 @@ jobs:
             STATUS=$(kaggle kernels status "$SLUG" 2>&1)
             RC=$?
             set -e
-            printf '%s\\n' "$STATUS"
+            printf '%s\n' "$STATUS"
 
             if [ "$RC" -ne 0 ]; then
               transient=$((transient+1))
@@ -185,9 +185,9 @@ jobs:
             fi
 
             transient=0
-            STATE=$(printf '%s\\n' "$STATUS" | sed -nE 's/^[[:space:]]*[Ss]tatus:[[:space:]]*"?([^"[:space:]]+)"?.*/\\1/p' | tail -n1 | tr '[:lower:]' '[:upper:]')
+            STATE=$(printf '%s\n' "$STATUS" | sed -nE 's/^[[:space:]]*[Ss]tatus:[[:space:]]*"?([^"[:space:]]+)"?.*/\1/p' | tail -n1 | tr '[:lower:]' '[:upper:]')
             if [ -z "$STATE" ]; then
-              STATE=$(printf '%s\\n' "$STATUS" | grep -Eo 'KernelWorkerStatus\\.[A-Za-z_]+' | tail -n1 | cut -d. -f2 | tr '[:lower:]' '[:upper:]' || true)
+              STATE=$(printf '%s\n' "$STATUS" | grep -Eo 'KernelWorkerStatus\.[A-Za-z_]+' | tail -n1 | cut -d. -f2 | tr '[:lower:]' '[:upper:]' || true)
             fi
 
             echo "KAGGLE_KERNEL_STATE=${STATE:-UNKNOWN}"
@@ -266,8 +266,8 @@ jobs:
               "semantic_visual_qa":"REQUIRED_BEFORE_PUBLISH",
               "source_manifest":os.environ["SELECTED_MANIFEST"]
           }
-          (out/"manifest.json").write_text(json.dumps(review,indent=2)+"\\n")
-          (out/"source-topic.json").write_text(json.dumps(topic,indent=2)+"\\n")
+          (out/"manifest.json").write_text(json.dumps(review,indent=2)+"\n")
+          (out/"source-topic.json").write_text(json.dumps(topic,indent=2)+"\n")
           print("TECHNICAL_QA=PASS")
           print("CANDIDATE_SHA256="+sha)
           PY
@@ -311,7 +311,7 @@ jobs:
               "artifact_url":os.environ["ARTIFACT_URL"],
               "rendered_at":datetime.now(timezone.utc).isoformat()
           })
-          p.write_text(json.dumps(data,indent=2)+"\\n")
+          p.write_text(json.dumps(data,indent=2)+"\n")
           PY
 
           git config user.name "OddProofLab Runner"
