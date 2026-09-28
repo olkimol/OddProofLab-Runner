@@ -26,27 +26,15 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 210
     env:
-      PRIVATE_REPO_TOKEN: ${{ secrets.ODDPROOF_PRIVATE_REPO_TOKEN }}
       KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
       KAGGLE_USERNAME: olkimol
 
     steps:
-      - name: Checkout public executor
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Validate secrets
+      - name: Validate Kaggle secret
         run: |
-          test -n "$PRIVATE_REPO_TOKEN" || { echo MISSING_ODDPROOF_PRIVATE_REPO_TOKEN; exit 2; }
           test -n "$KAGGLE_API_TOKEN" || { echo MISSING_KAGGLE_API_TOKEN; exit 2; }
-
-      - name: Checkout private OddProofLab source of truth
-        uses: actions/checkout@v4
-        with:
-          repository: olkimol/OddProofLab
-          ref: oddproof-shorts
-          token: ${{ secrets.ODDPROOF_PRIVATE_REPO_TOKEN }}
-          path: source
-          persist-credentials: false
 
       - name: Select approved topic
         id: topic
@@ -59,17 +47,17 @@ jobs:
           from pathlib import Path
 
           queue=json.loads(Path("config/queue.json").read_text())
-          registry=json.loads(Path("source/oddproof/published_topics.json").read_text())
-          state_path=Path("state/rendered.json")
-          state=json.loads(state_path.read_text()) if state_path.exists() else {"items":[]}
+          registry=json.loads(Path("state/published_topics.json").read_text())
+          rendered_path=Path("state/rendered.json")
+          rendered=json.loads(rendered_path.read_text()) if rendered_path.exists() else {"items":[]}
 
           published=set(registry.get("topics",{}))
           pending={
-              x["slug"] for x in state.get("items",[])
+              x["slug"] for x in rendered.get("items",[])
               if x.get("status") in {"pending_qa","qa_pass","publishing"}
           }
 
-          manifest_dir=Path("source/oddproof/gpu-video/kaggle")
+          manifest_dir=Path("engine")
           requested=os.getenv("REQUESTED_MANIFEST","").strip()
           force=os.getenv("FORCE_RENDER","false").lower()=="true"
           candidates=[requested] if requested else queue["topics"]
@@ -113,7 +101,7 @@ jobs:
           kaggle kernels list --user "$KAGGLE_USERNAME" --page-size 1 >/tmp/kaggle-auth.txt
           cat /tmp/kaggle-auth.txt
 
-      - name: Build private GPU package
+      - name: Build private Kaggle GPU package
         env:
           SELECTED_MANIFEST: ${{ steps.topic.outputs.manifest }}
         run: |
@@ -123,7 +111,7 @@ jobs:
           import base64, json, os
           from pathlib import Path
 
-          src=Path("source/oddproof/gpu-video/kaggle")
+          src=Path("engine")
           selected=os.environ["SELECTED_MANIFEST"]
           files={
               "selected-topic.json": src/selected,
@@ -146,7 +134,7 @@ jobs:
               "    (RUNTIME/name).write_bytes(base64.b64decode(encoded))",
               "subprocess.run([sys.executable, str(RUNTIME/'sprint-runner.py'), '--manifest', str(RUNTIME/'selected-topic.json')], check=True)",
           ]
-          Path("/tmp/oddproof-kaggle/oddproof_public_executor.py").write_text("\n".join(lines)+"\n")
+          Path("/tmp/oddproof-kaggle/oddproof_public_executor.py").write_text("\\n".join(lines)+"\\n")
 
           meta={
               "id":"olkimol/oddproof-public-executor",
@@ -164,7 +152,7 @@ jobs:
               "model_sources":[]
           }
           Path("/tmp/oddproof-kaggle/kernel-metadata.json").write_text(
-              json.dumps(meta,indent=2)+"\n"
+              json.dumps(meta,indent=2)+"\\n"
           )
           PY
 
@@ -180,7 +168,7 @@ jobs:
             STATUS=$(kaggle kernels status "$SLUG" 2>&1)
             RC=$?
             set -e
-            printf '%s\n' "$STATUS"
+            printf '%s\\n' "$STATUS"
 
             if [ "$RC" -ne 0 ]; then
               transient=$((transient+1))
@@ -194,9 +182,9 @@ jobs:
             fi
 
             transient=0
-            STATE=$(printf '%s\n' "$STATUS" | sed -nE 's/^[[:space:]]*[Ss]tatus:[[:space:]]*"?([^"[:space:]]+)"?.*/\1/p' | tail -n1 | tr '[:lower:]' '[:upper:]')
+            STATE=$(printf '%s\\n' "$STATUS" | sed -nE 's/^[[:space:]]*[Ss]tatus:[[:space:]]*"?([^"[:space:]]+)"?.*/\\1/p' | tail -n1 | tr '[:lower:]' '[:upper:]')
             if [ -z "$STATE" ]; then
-              STATE=$(printf '%s\n' "$STATUS" | grep -Eo 'KernelWorkerStatus\.[A-Za-z_]+' | tail -n1 | cut -d. -f2 | tr '[:lower:]' '[:upper:]' || true)
+              STATE=$(printf '%s\\n' "$STATUS" | grep -Eo 'KernelWorkerStatus\\.[A-Za-z_]+' | tail -n1 | cut -d. -f2 | tr '[:lower:]' '[:upper:]' || true)
             fi
 
             echo "KAGGLE_KERNEL_STATE=${STATE:-UNKNOWN}"
@@ -238,9 +226,7 @@ jobs:
           out=Path("candidate/oddproof-output")
           video=out/"candidate.mp4"
           generation=json.loads((out/"generation.json").read_text())
-          topic=json.loads(
-              (Path("source/oddproof/gpu-video/kaggle")/os.environ["SELECTED_MANIFEST"]).read_text()
-          )
+          topic=json.loads((Path("engine")/os.environ["SELECTED_MANIFEST"]).read_text())
 
           probe=json.loads(subprocess.check_output(
               ["ffprobe","-v","error","-show_streams","-show_format","-of","json",str(video)],
@@ -277,8 +263,8 @@ jobs:
               "semantic_visual_qa":"REQUIRED_BEFORE_PUBLISH",
               "source_manifest":os.environ["SELECTED_MANIFEST"]
           }
-          (out/"manifest.json").write_text(json.dumps(review,indent=2)+"\n")
-          (out/"source-topic.json").write_text(json.dumps(topic,indent=2)+"\n")
+          (out/"manifest.json").write_text(json.dumps(review,indent=2)+"\\n")
+          (out/"source-topic.json").write_text(json.dumps(topic,indent=2)+"\\n")
           print("TECHNICAL_QA=PASS")
           print("CANDIDATE_SHA256="+sha)
           PY
@@ -322,7 +308,7 @@ jobs:
               "artifact_url":os.environ["ARTIFACT_URL"],
               "rendered_at":datetime.now(timezone.utc).isoformat()
           })
-          p.write_text(json.dumps(data,indent=2)+"\n")
+          p.write_text(json.dumps(data,indent=2)+"\\n")
           PY
 
           git config user.name "OddProofLab Runner"
