@@ -1,0 +1,26 @@
+{
+  "slug":"body-in-space-without-a-suit",
+  "title":"What Would Happen to Your Body in Space Without a Suit?",
+  "start_frame_seed":9170901,
+  "minimum_motion_score":2.2,
+  "voice":"af_heart",
+  "start_frame_prompt":"Ultra-photorealistic vertical cinematic shot inside a modern spacecraft airlock, an anonymous adult astronaut seen from behind in a realistic pressure suit beside a small observation window showing black space and Earth, premium live-action science documentary quality, practical white cabin lighting, no text, no logos, no disaster imagery.",
+  "negative_prompt":"exploding body, frozen body, instant ice, gore, blood, horror, cartoon, infographic, labels, fantasy, fireball, text, watermark, black bars, malformed suit",
+  "narration":"Space would not make your body explode, and you would not instantly freeze. The immediate danger is vacuum. If you held your breath, expanding gas could injure your lungs, so exhaling matters. Without oxygen, useful consciousness would likely last only seconds. At very low pressure, water in exposed tissues can begin to vaporize, causing swelling, while circulation briefly keeps deeper blood from boiling. Heat loss is slower than movies suggest. Rapid repressurization can be survivable after very short exposure — but prolonged vacuum quickly becomes fatal.",
+  "captions":["YOU WOULDN'T EXPLODE.","VACUUM + NO OXYGEN ARE THE REAL THREATS.","DON'T HOLD YOUR BREATH.","LOW PRESSURE CAN MAKE TISSUES SWELL.","SECONDS MATTER."],
+  "scenes":[
+    {"seed":9170911,"duration_seconds":6,"prompt":"Start inside the exact spacecraft airlock. Use a scientifically staged visualization: the outer hatch area transitions into a controlled training-style vacuum demonstration around a human anatomical silhouette while the real astronaut remains safely suited. Camera pushes toward the visor reflection. Do not show an unprotected real person being harmed; no explosion, freezing or gore."},
+    {"seed":9170912,"duration_seconds":6,"prompt":"Pass impossibly through the visor reflection into a photoreal anatomical visualization of lungs and airways. Show trapped gas expanding as external pressure drops, while a second safe comparison shows an open airway exhaling. Keep anatomy realistic and non-graphic, no labels, no bursting organs, no neon arrows."},
+    {"seed":9170913,"duration_seconds":6,"prompt":"Travel continuously into blood vessels and tissues at microscopic scale. Oxygen saturation falls while circulation continues briefly; show subtle dissolved-gas and water-vapor effects in exposed moist tissue without depicting blood literally boiling. Physically plausible fluid behavior, premium scientific visualization, no fantasy bubbles filling every vessel."},
+    {"seed":9170914,"duration_seconds":6,"prompt":"Pull back to a realistic human-body silhouette in vacuum simulation. Show modest whole-body swelling and surface moisture effects while body temperature changes slowly, explicitly avoiding instant freezing, explosive decompression or grotesque distortion. Camera orbits gently against black space with Earth providing scale."},
+    {"seed":9170915,"duration_seconds":6,"prompt":"Return to the original safe astronaut in the spacecraft airlock as pressure is restored in the demonstration chamber. Warm practical cabin light returns and the camera settles on the closed hatch. End calm and factual: rapid rescue and repressurization are the visual resolution. No generated text, no heroic fantasy, no injury."}
+  ],
+  "production_notes":{
+    "director_intent":"Debunk three movie myths visually: no explosion, no instant freeze, no instant blood boiling. The tension comes from pressure and oxygen loss, not gore.",
+    "science_guard":"Do not present an exact universal unconsciousness time. Say useful consciousness likely lasts only seconds. Do not claim blood in intact circulation instantly boils; ebullism primarily affects water in low-pressure tissues. Do not imply instant freezing.",
+    "generated_runtime_ratio_target":1.0,
+    "external_footage_ratio_target":0.0,
+    "sound_design":"Natural English narration, quiet spacecraft ventilation at exterior, muffled low ambience during internal visualization; no explosive decompression blast or horror sounds.",
+    "qa_blockers":["exploding body","instant freezing","boiling blood claim","gore","unsafe sensational depiction","flat anatomy diagram","malformed astronaut","missing narration","caption clipping"]
+  }
+}
