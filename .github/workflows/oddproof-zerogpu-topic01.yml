@@ -1,0 +1,107 @@
+name: ODDPROOF Topic 01 ZeroGPU Recovery
+
+on:
+  push:
+    paths:
+      - 'zerogpu-trigger.txt'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: oddproof-topic01-zerogpu
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install runtime
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-dejavu-core espeak-ng
+          python -m pip install --disable-pip-version-check -q \
+            gradio_client kokoro soundfile opencv-python-headless numpy
+
+      - name: Generate five real video scenes through free public GPU routes
+        run: |
+          rm -rf work/zerogpu-scenes work/candidate
+          mkdir -p work/zerogpu-scenes work/candidate
+          python engine/generate_public_zerogpu.py \
+            --manifest engine/topic-01-you-never-actually-touch-anything.json \
+            --out work/zerogpu-scenes
+
+      - name: Build narrated subtitled candidate and run technical/motion QA
+        run: |
+          python engine/build_zerogpu_candidate.py \
+            --manifest engine/topic-01-you-never-actually-touch-anything.json \
+            --scenes-dir work/zerogpu-scenes \
+            --report work/zerogpu-scenes/generation-report.json \
+            --out work/candidate
+
+      - name: Preserve exact candidate for semantic QA
+        id: upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: oddproof-topic01-zerogpu-${{ github.run_id }}
+          path: |
+            work/candidate/candidate.mp4
+            work/candidate/hook-sheet.jpg
+            work/candidate/contact-sheet.jpg
+            work/candidate/captions.srt
+            work/candidate/manifest.json
+            work/candidate/source-topic.json
+            work/zerogpu-scenes/generation-report.json
+          retention-days: 5
+          compression-level: 0
+          if-no-files-found: error
+
+      - name: Record pending semantic QA
+        env:
+          ARTIFACT_ID: ${{ steps.upload.outputs.artifact-id }}
+          ARTIFACT_URL: ${{ steps.upload.outputs.artifact-url }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          manifest=json.loads(Path("work/candidate/manifest.json").read_text())
+          p=Path("state/rendered.json")
+          state=json.loads(p.read_text()) if p.exists() else {"items":[]}
+          state["items"]=[
+              x for x in state.get("items",[])
+              if x.get("slug") != manifest["slug"]
+          ]
+          state["items"].append({
+              "slug": manifest["slug"],
+              "title": manifest["title"],
+              "source_manifest": "topic-01-you-never-actually-touch-anything.json",
+              "status": "pending_qa",
+              "run_id": int(os.environ["GITHUB_RUN_ID"]),
+              "artifact_id": int(os.environ["ARTIFACT_ID"]),
+              "artifact_url": os.environ["ARTIFACT_URL"],
+              "candidate_sha256": manifest["candidate_sha256"],
+              "rendered_at": datetime.now(timezone.utc).isoformat()
+          })
+          p.write_text(json.dumps(state,indent=2)+"\n")
+          PY
+
+          git config user.name "OddProofLab Runner"
+          git config user.email "actions@users.noreply.github.com"
+          git add state/rendered.json
+          git commit -m "Record Topic 01 ZeroGPU candidate pending QA"
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      - name: Gate
+        run: |
+          echo "RENDER=SUCCESS"
+          echo "TECHNICAL_QA=PASS"
+          echo "PUBLICATION=BLOCKED_PENDING_SEMANTIC_VISUAL_AUDIO_QA"
