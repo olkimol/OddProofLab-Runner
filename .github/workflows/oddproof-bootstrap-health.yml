@@ -1,0 +1,33 @@
+name: ODDPROOF Bootstrap Health
+
+on:
+  push:
+    paths:
+      - 'bootstrap-trigger.txt'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
+      KAGGLE_USERNAME: olkimol
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate executor
+        run: |
+          test -f engine/ultrareal-runner.py
+          test -f engine/sprint-runner.py
+          test -f config/queue.json
+          test -f state/published_topics.json
+      - name: Verify Kaggle
+        run: |
+          test -n "$KAGGLE_API_TOKEN"
+          python -m pip install -q -U kaggle
+          kaggle kernels list --user "$KAGGLE_USERNAME" --page-size 1
+      - name: Result
+        run: echo ODDPROOF_BOOTSTRAP_HEALTH=PASS
