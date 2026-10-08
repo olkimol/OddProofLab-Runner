@@ -1,0 +1,67 @@
+name: UNITEC Auto Publish
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/15 * * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: unitec-autopublish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      AUTOPUBLISH_ENABLED: ${{ secrets.AUTOPUBLISH_ENABLED }}
+      QUEUE_SPREADSHEET_ID: 1YztPpGed4-8TJ_BTNSfm2gsCVn48-T4aoa24QAQjrpI
+      QUEUE_SHEET: Queue
+      SUPABASE_URL: https://tqoalmrguatkxkrgwgtq.supabase.co
+      STAGE_BUCKET: autopublish-stage
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+      GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+      YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+      YOUTUBE_CHANNEL_ID: ${{ secrets.YOUTUBE_CHANNEL_ID }}
+      SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      TELEGRAM_CHANNEL_USERNAME: ${{ secrets.TELEGRAM_CHANNEL_USERNAME }}
+      INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+      INSTAGRAM_USER_ID: ${{ secrets.INSTAGRAM_USER_ID }}
+      THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+      TIKTOK_ACCESS_TOKEN: ${{ secrets.TIKTOK_ACCESS_TOKEN }}
+      TIKTOK_PHOTO_URL_VERIFIED: ${{ secrets.TIKTOK_PHOTO_URL_VERIFIED }}
+
+    steps:
+      - name: Check activation
+        run: |
+          if [ "${AUTOPUBLISH_ENABLED}" = "1" ]; then
+            echo "Publication is enabled."
+          else
+            echo "Publication is disabled until one-time channel authorization is complete."
+          fi
+
+      - name: Checkout
+        if: env.AUTOPUBLISH_ENABLED == '1'
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        if: env.AUTOPUBLISH_ENABLED == '1'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: autopublish/requirements.txt
+
+      - name: Install publisher
+        if: env.AUTOPUBLISH_ENABLED == '1'
+        run: python -m pip install --disable-pip-version-check -r autopublish/requirements.txt
+
+      - name: Publish due queue items
+        if: env.AUTOPUBLISH_ENABLED == '1'
+        run: python autopublish/publisher.py
