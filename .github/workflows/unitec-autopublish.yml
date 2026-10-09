@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   publish:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 25
     env:
       AUTOPUBLISH_ENABLED: ${{ secrets.AUTOPUBLISH_ENABLED }}
@@ -55,8 +55,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-          cache: pip
-          cache-dependency-path: autopublish/requirements.txt
 
       - name: Install publisher
         if: env.AUTOPUBLISH_ENABLED == '1'
