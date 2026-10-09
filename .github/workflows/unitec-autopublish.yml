@@ -4,6 +4,10 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '*/15 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'autopublish/trigger.txt'
 
 permissions:
   contents: read
